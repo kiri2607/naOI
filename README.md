@@ -1,2 +1,2 @@
-# naOI
-naoiiiiiii
+# Templateczka na OI
+
