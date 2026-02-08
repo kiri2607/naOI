@@ -63,6 +63,13 @@ struct FastIO{
         }
         return odp;
     }
+    void igc(char& c){
+        int ch = GetChar();
+        while(ch <= ' ' && ch != EOF){
+            ch = GetChar();
+        }
+        c = ch;
+    }
     char obuffer[Size];
     int opos = 0;
     void Flush(){
