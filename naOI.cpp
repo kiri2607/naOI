@@ -18,105 +18,96 @@ pair<ll, ll> euk(ll a, ll b){
 // g = gcd(a, b)
 // xall = x + k * b / g
 // yall = y - k * a / g
-void igac(char& c){
-    c = getchar_unlocked();
-}
-void igc(char& c){
-    c = getchar_unlocked();
-    while(c == ' ' || c == '\n'){
-        c = getchar_unlocked();
+struct FastIO{
+    ~FastIO(){
+        Flush();
     }
-}
-void igs(string& s){
-    s.clear();
-    char c;
-    c = getchar_unlocked();
-    while(c == ' ' || c == '\n'){
-        c = getchar_unlocked();
-    }
-    while(c != ' ' && c != '\n'){
-        s.push_back(c);
-        c = getchar_unlocked();
-    }
-}
-void igi(int& n){
-    n = 0;
-    char c;
-    c = getchar_unlocked();
-    while(c == ' ' || c == '\n'){
-        c = getchar_unlocked();
-    }
-    while(c != ' ' && c != '\n'){
-        n *= 10;
-        n += c - '0';
-        c = getchar_unlocked();
-    }
-}
-void igll(ll& n){
-    n = 0;
-    char c;
-    c = getchar_unlocked();
-    while(c == ' ' || c == '\n'){
-        c = getchar_unlocked();
-    }
-    while(c != ' ' && c != '\n'){
-        n *= 10;
-        n += c - '0';
-        c = getchar_unlocked();
-    }
-}
-void ogc(char c){
-    putchar_unlocked(c);
-}
-void ogs(string s){
-    rep(i, 0, s.size()){
-        putchar_unlocked(s[i]);
-    }
-}
-void ogi(int n){
-    string s;
-    if(n == 0){
-        s.push_back('0');
-    }
-    else if(n < 0){
-        n = abs(n);
-        while(n > 0){
-            s.push_back('0' + n % 10);
-            n /= 10;
+    static const int Size = 1 << 21;
+    char ibuffer[Size];
+    int ipos = 0, ien = 0;
+    int GetChar(){
+        if(ipos == ien){
+            ien = fread(ibuffer, 1, Size, stdin);
+            ipos = 0;
+            if(ien == 0) return EOF;
         }
-        s.push_back('-');
+        return ibuffer[ipos++];
     }
-    else{
-        while(n > 0){
-            s.push_back('0' + n % 10);
-            n /= 10;
+    void igi(long long& n){
+        n = 0;
+        bool im = false;
+        int c;
+        c = GetChar();
+        while(c <= ' ' && c != EOF){
+            c = GetChar();
+        }
+        if(c == '-'){
+            im = true;
+            c = GetChar();
+        }
+        while(c >= '0' && c <= '9'){
+            n *= 10;
+            n += c - '0';
+            c = GetChar();
+        }
+        if(im) n *= -1;
+    }
+    string igs(){
+        int c = GetChar();
+        string odp;
+        odp.reserve(32);
+        while(c <= ' ' && c != EOF) c = GetChar();
+        while(c > ' ' && c != EOF){
+            odp.push_back(c);
+            c  = GetChar();
+        }
+        return odp;
+    }
+    char obuffer[Size];
+    int opos = 0;
+    void Flush(){
+        fwrite(obuffer, 1, opos, stdout);
+        opos = 0;
+    }
+    void PutChar(char c){
+        if(opos == Size) Flush();
+        obuffer[opos++] = c;
+    }
+    void ogs(const char* s){
+        while(*s){
+            PutChar(*s);
+            ++s;
         }
     }
-    reverse(all(s));
-    ogs(s);
-}
-void ogll(ll n){
-    string s;
-    if(n == 0){
-        s.push_back('0');
-    }
-    else if(n < 0){
-        n = abs(n);
-        while(n > 0){
-            s.push_back('0' + n % 10);
-            n /= 10;
+    void ogi(ll nn){
+        char buf[21];
+        int st = 19;
+        buf[20] = '\0';
+        bool im = false;
+        if(nn == 0){
+            buf[st] = '0';
+            st--;
         }
-        s.push_back('-');
-    }
-    else{
-        while(n > 0){
-            s.push_back('0' + n % 10);
-            n /= 10;
+        unsigned long long x;
+        if(nn < 0){
+            x = -(unsigned long long)nn;
+            im = true;
         }
+        else{
+            x = nn;
+        }
+        while(x > 0){
+            buf[st] = '0' + x % 10;
+            st--;
+            x /= 10;
+        }
+        if(im){
+            buf[st] = '-';
+            st--;
+        }
+        ogs(buf + st + 1);
     }
-    reverse(all(s));
-    ogs(s);
-}
+};
 int main(){
     fast;
 }
